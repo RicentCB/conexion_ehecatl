@@ -5,6 +5,4 @@ Se necesita configurar el proyecto en firebase y tener los siguientes paquetes i
     $ sudo pip3 install firebase-admin
 ```
 
-Crear un archivo en la raiz del proyecto llamado **`.env`**, en el cual deberas agregar las siguientes variables
-```bash
-```
+Crear un archivo en la raiz del proyecto llamado **`private_key.json`**, el cual sera otorgado por el administrador del proyecto de firebase.
