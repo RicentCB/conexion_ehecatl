@@ -8,7 +8,7 @@ load_dotenv()
 # FUNCION PRINCIPAL DEL PROGRAMA
 # try:
 #Variable con la url de la base de adtos
-serverDb = os.getenv('SERVER_FIREBASE_APP')
+serverDb = 'https://conexionehecatl2021-default-rtdb.firebaseio.com/'
 #Conexion con las base de datos
 firebaseApp = firebase.FirebaseApplication(serverDb, None)
 
