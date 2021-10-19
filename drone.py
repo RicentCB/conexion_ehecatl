@@ -1,3 +1,4 @@
+import time
 # Librerias
 import flightController
 import firebase_admin
@@ -63,12 +64,43 @@ class Drone:
     # Metodo para iniciar un viaje
     def setStartTrip(self, coords):
         # Cambiar estado del drone
-        self.__state = 'inTrip'
+        self.__state = 'inProgress'
         # Enivar instruccion de vuelo
         self.__sendInformation('dro_initTrip')
+        # Obtener inicio y final de viaje
+        finalDestination = coords[-1]
+        indexCoords = 1
+        for i in range(10):
+            currentPosition = self.__moveTo(coords[i])
+            print(currentPosition)
+            self.__sendInformation('dro_position')
+            time.sleep(5)
         # Programa prinicipal para control de vuelo
-        currentPosition = self.__controller.getPosition
-        print(currentPosition)
+        # while(coords[indexCoords] != finalDestination):
+        #     if(self.__verifyHeight()):
+        #         currentPosition = self.__moveTo(coords[indexCoords])
+        #         # Se ha alcanazdo el punto geografico destino
+        #         if(currentPosition == coords[indexCoords]):
+        #             print(currentPosition)
+        #             self.__sendInformation('dro_position')
+        #             indexCoords += 1
+            # Terminar verificar altura
+        # Termina While
+
+    # TODO: Metodo para verificar altura actual
+    def __verifyHeight(self):
+        while(True):
+            time.sleep(2)
+            break
+        return True
+    
+    # TODO: Metodo prinicipal
+    # Moviliza al drone dado un grupo de coordendas geograficas
+    # Regresa la nueva posicion en la que se encuentra
+    def __moveTo(self, latLon):
+        print(latLon)
+        time.sleep(5)
+        return latLon
 
     # -------------------------------------------------------------
     # Metodo donde se "escuchan" todos los items
