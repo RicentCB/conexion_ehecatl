@@ -18,6 +18,11 @@ class FlightController:
         #TODO: OBtener bateria
         return self.__battery
 
+    # Mok setear gps
+    def setPosition(self, lat, lon):
+        self.__currentLat = lat;
+        self.__currentLon = lon;
+
     # Getter posicion GPS actual
     @property
     def getPosition(self):

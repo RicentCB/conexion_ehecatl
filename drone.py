@@ -50,6 +50,7 @@ class Drone:
             'lon': info['currentLon'],
             'maxRange': self.__maxRange(info['battery'])
         }
+        self.__cleanChannel()
         self.__db.push(data)
 
     # Metodo para preparar al drone para empezar a volar
@@ -70,11 +71,10 @@ class Drone:
         # Obtener inicio y final de viaje
         finalDestination = coords[-1]
         indexCoords = 1
-        for i in range(10):
-            currentPosition = self.__moveTo(coords[i])
-            print(currentPosition)
+        for i in range(len(coords)):
+            self.__moveTo(coords[i])
             self.__sendInformation('dro_position')
-            time.sleep(5)
+            time.sleep(0.5)
         # Programa prinicipal para control de vuelo
         # while(coords[indexCoords] != finalDestination):
         #     if(self.__verifyHeight()):
@@ -99,8 +99,8 @@ class Drone:
     # Regresa la nueva posicion en la que se encuentra
     def __moveTo(self, latLon):
         print(latLon)
+        self.__controller.setPosition(latLon[0], latLon[1])
         time.sleep(5)
-        return latLon
 
     # -------------------------------------------------------------
     # Metodo donde se "escuchan" todos los items
