@@ -12,6 +12,7 @@ class FlightController:
         self.__currentLat = 19.5040103
         self.__currentLon = -99.1470982
 
+    # Metodo para obtener datos del controlador
     @property
     def information(self):
         return {

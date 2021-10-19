@@ -43,8 +43,8 @@ class Drone:
         data = {
             'ins': 'dro_ready', 
             'battery': info['battery'],
-            'currentLat': info['currentLat'],
-            'currentLon': info['currentLon'],
+            'lat': info['currentLat'],
+            'lon': info['currentLon'],
             'maxRange': self.__maxRange(info['battery'])
         }
         self.__sendInformation(data)
@@ -59,12 +59,19 @@ class Drone:
             'ins': 'dro_position', 
             'state': stateOfDrone,
             'battery': info['battery'],
-            'currentLat': info['currentLat'],
-            'currentLon': info['currentLon'],
+            'lat': info['currentLat'],
+            'lon': info['currentLon'],
             'maxRange': self.__maxRange(info['battery'])
         }
         self.__sendInformation(data)
 
+    # Metodo para iniciar un viaje
+    def setStartTrip(self, coords):
+        print(coords);
+
+    # Metodo donde se "escuchan" todos los items
+    # agregados en el canal por la app y por el drone
+    # aqui se recibe y se procesa cada instruccion
     def onInstruction(self, dataRecived):
         dataRec = dataRecived.data
         if(dataRec != None and 'ins' in dataRec):
@@ -74,3 +81,6 @@ class Drone:
                 self.setReady()
             elif(instruction == 'app_position'):
                 self.setPosition()
+            elif(instruction == 'app_startTrip'):
+                coords = dataRec['coordsForTrip']
+                self.setStartTrip(coords)
