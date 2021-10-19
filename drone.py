@@ -9,7 +9,7 @@ class Drone:
     __nameCollection = 'instructionsid'
     __idDrone = 1
     __db = None
-    __battery = 0
+    __state = ''
 
     def __init__(self):
         # Inciializar instancia de firebase
@@ -22,53 +22,55 @@ class Drone:
         print("Script Iniciado")
         print("Esperando instruccion")
 
+    # Metodo para calcular el rango maximo que puede volar el drone
+    # @param battery (double): bateria actual
+    # return (double)
     def __maxRange(self, battery):
+        # TODO: Calculo de rango con bateria
         return battery * 100;
-
-    # Metodo para enviar informacion a la interfaz de conexion
-    # @param data: Mapa con los datos a enviar
-    def __sendInformation(self, data):
-        self.__db.push(data)
 
     # Metodo para limpiar interfaz de conexion
     def __cleanChannel(self):
         self.__db.parent.delete();
 
-    # Metodo para preparar al drone
+    # Metodo para enviar informacion general actual del drone
+    # Recopila la informacion del controlador, 
+    # y la envia al canal de comunincacion.
+    # @param instruction (String): instruccion a enviar
+    def __sendInformation(self, instruction):
+        # Solicitar informacion al controlador de vuelo
+        info = self.__controller.information
+        # Limpiar informacion para ser enviada
+        data = {
+            'ins': instruction, 
+            'state': self.__state,
+            'battery': info['battery'],
+            'lat': info['currentLat'],
+            'lon': info['currentLon'],
+            'maxRange': self.__maxRange(info['battery'])
+        }
+        self.__db.push(data)
+
+    # Metodo para preparar al drone para empezar a volar
     def setReady(self):
+        # Limpiar canal de comunicacion
         self.__cleanChannel()
+        # Cambiar estado del drone
+        self.__state = 'waiting'
         # Solicitar informacion al controlador de vuelo
-        info = self.__controller.information
-        # Limpiar informacion para ser enviada
-        data = {
-            'ins': 'dro_ready', 
-            'battery': info['battery'],
-            'lat': info['currentLat'],
-            'lon': info['currentLon'],
-            'maxRange': self.__maxRange(info['battery'])
-        }
-        self.__sendInformation(data)
-    
-    # Metodo para obtener posicion actual
-    def setPosition(self):
-        # Solicitar informacion al controlador de vuelo
-        info = self.__controller.information
-        # Limpiar informacion para ser enviada
-        stateOfDrone = 'waiting'
-        data = {
-            'ins': 'dro_position', 
-            'state': stateOfDrone,
-            'battery': info['battery'],
-            'lat': info['currentLat'],
-            'lon': info['currentLon'],
-            'maxRange': self.__maxRange(info['battery'])
-        }
-        self.__sendInformation(data)
+        self.__sendInformation('dro_ready')
 
     # Metodo para iniciar un viaje
     def setStartTrip(self, coords):
-        print(coords);
+        # Cambiar estado del drone
+        self.__state = 'inTrip'
+        # Enivar instruccion de vuelo
+        self.__sendInformation('dro_initTrip')
+        # Programa prinicipal para control de vuelo
+        currentPosition = self.__controller.getPosition
+        print(currentPosition)
 
+    # -------------------------------------------------------------
     # Metodo donde se "escuchan" todos los items
     # agregados en el canal por la app y por el drone
     # aqui se recibe y se procesa cada instruccion
@@ -77,10 +79,13 @@ class Drone:
         if(dataRec != None and 'ins' in dataRec):
             instruction = dataRec['ins']
             print(instruction)
+            # Instruccion para inicializar drone
             if(instruction == 'app_prepared'):
                 self.setReady()
+            # Instruccion para solicitar posicion actual
             elif(instruction == 'app_position'):
-                self.setPosition()
+                self.__sendInformation('dro_position')
+            # Instruccion para inciar viaje
             elif(instruction == 'app_startTrip'):
                 coords = dataRec['coordsForTrip']
                 self.setStartTrip(coords)
