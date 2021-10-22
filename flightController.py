@@ -18,7 +18,7 @@ class FlightController:
         #TODO: OBtener bateria
         return self.__battery
 
-    # Mok setear gps
+    # Mock para fingir movimiento en el GPS del drone
     def setPosition(self, lat, lon):
         self.__currentLat = lat;
         self.__currentLon = lon;
@@ -26,10 +26,8 @@ class FlightController:
     # Getter posicion GPS actual
     @property
     def getPosition(self):
-        #TODO:
-        lat = 19.5040103
-        lon =  -99.1470982
-        currentPosition = (lat, lon)
+        #TODO: Conexion GPS para obtener ubicacion
+        currentPosition = (self.__currentLat, self.__currentLon)
         return currentPosition
 
     # Metodo para obtener datos del controlador

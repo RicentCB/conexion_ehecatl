@@ -21,7 +21,6 @@ class Drone:
         self.setReady()
         self.__db.listen(self.onInstruction)
         print("Script Iniciado")
-        print("Esperando instruccion")
 
     # Metodo para calcular el rango maximo que puede volar el drone
     # @param battery (double): bateria actual
@@ -59,7 +58,7 @@ class Drone:
         self.__cleanChannel()
         # Cambiar estado del drone
         self.__state = 'waiting'
-        # Solicitar informacion al controlador de vuelo
+        # Enivar instruccion por el canal
         self.__sendInformation('dro_ready')
 
     # Metodo para iniciar un viaje
@@ -70,37 +69,35 @@ class Drone:
         self.__sendInformation('dro_initTrip')
         # Obtener inicio y final de viaje
         finalDestination = coords[-1]
+        numberOfCords = range(coords)
         indexCoords = 1
-        for i in range(len(coords)):
-            self.__moveTo(coords[i])
-            self.__sendInformation('dro_position')
-            time.sleep(0.5)
         # Programa prinicipal para control de vuelo
-        # while(coords[indexCoords] != finalDestination):
-        #     if(self.__verifyHeight()):
-        #         currentPosition = self.__moveTo(coords[indexCoords])
-        #         # Se ha alcanazdo el punto geografico destino
-        #         if(currentPosition == coords[indexCoords]):
-        #             print(currentPosition)
-        #             self.__sendInformation('dro_position')
-        #             indexCoords += 1
+        while(coords[indexCoords] != finalDestination):
+            if(self.__verifyHeight()):
+                self.__moveTo(coords[indexCoords])
+                # Se ha alcanazdo el punto geografico destino
+                self.__sendInformation('dro_position')
+                indexCoords += 1
             # Terminar verificar altura
-        # Termina While
+        # Se ha alcanzado el destino final
+        # ----------------------------------------
+        # Cambiar estado del drone
+        self.__state = 'waiting'
+        self.__sendInformation('dro_reachDest')
 
     # TODO: Metodo para verificar altura actual
     def __verifyHeight(self):
-        while(True):
-            time.sleep(2)
-            break
+        # while(True):
+        time.sleep(2)
+            # break
         return True
     
     # TODO: Metodo prinicipal
     # Moviliza al drone dado un grupo de coordendas geograficas
     # Regresa la nueva posicion en la que se encuentra
     def __moveTo(self, latLon):
-        print(latLon)
         self.__controller.setPosition(latLon[0], latLon[1])
-        time.sleep(5)
+        time.sleep(2)
 
     # -------------------------------------------------------------
     # Metodo donde se "escuchan" todos los items
