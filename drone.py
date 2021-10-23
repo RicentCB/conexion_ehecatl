@@ -37,7 +37,7 @@ class Drone:
     # Recopila la informacion del controlador, 
     # y la envia al canal de comunincacion.
     # @param instruction (String): instruccion a enviar
-    def __sendInformation(self, instruction):
+    def __sendInformation(self, instruction, extraInfo = {}):
         # Solicitar informacion al controlador de vuelo
         info = self.__controller.information
         # Limpiar informacion para ser enviada
@@ -49,6 +49,7 @@ class Drone:
             'lon': info['currentLon'],
             'maxRange': self.__maxRange(info['battery'])
         }
+        data.update(extraInfo)
         self.__cleanChannel()
         self.__db.push(data)
 
@@ -69,17 +70,18 @@ class Drone:
         self.__sendInformation('dro_initTrip')
         # Obtener inicio y final de viaje
         finalDestination = coords[-1]
-        numberOfCords = range(coords)
-        indexCoords = 1
+        indexCoords = 0
+        numberOfCords = len(coords)
         # Programa prinicipal para control de vuelo
         while(coords[indexCoords] != finalDestination):
             if(self.__verifyHeight()):
-                self.__moveTo(coords[indexCoords])
+                self.__moveTo(coords[indexCoords+1])
                 # Se ha alcanazdo el punto geografico destino
-                self.__sendInformation('dro_position')
+                self.__sendInformation('dro_position', {"progressTrip": indexCoords/numberOfCords});
                 indexCoords += 1
             # Terminar verificar altura
         # Se ha alcanzado el destino final
+        self.__sendInformation('dro_position', {"progressTrip": 1.0});
         # ----------------------------------------
         # Cambiar estado del drone
         self.__state = 'waiting'
@@ -88,7 +90,7 @@ class Drone:
     # TODO: Metodo para verificar altura actual
     def __verifyHeight(self):
         # while(True):
-        time.sleep(2)
+        time.sleep(0.5)
             # break
         return True
     
