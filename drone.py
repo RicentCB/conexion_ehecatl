@@ -99,6 +99,7 @@ class Drone:
     # Regresa la nueva posicion en la que se encuentra
     def __moveTo(self, latLon):
         self.__controller.setPosition(latLon[0], latLon[1])
+        print(latLon)
         time.sleep(2)
 
     # -------------------------------------------------------------
