@@ -1,20 +1,13 @@
 from time import sleep
 from gpiozero import DistanceSensor 
 
-class DistanceSensor:
+class Sensor:
     __MAX_DISTANCE = 3.0
     def __init__(self, echo, trigger):
         # Incializar pines
-        # self.__sensor = DistanceSensor(ehco=echo, 
-        #     trigger=trigger, 
-        #     max_distance=self.__MAX_DISTANCE)
-        
-        self.__sensor = DistanceSensor(
-            echo=20, 
-            trigger=21, 
-            max_distance=3.0)
-
-
+        self.__sensor = DistanceSensor(ehco=echo, 
+            trigge=trigger, 
+            max_distance=self.__MAX_DISTANCE)
     
     def start(self):
         try:
