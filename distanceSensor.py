@@ -4,8 +4,11 @@ from threading import Thread
 from time import sleep
 
 class Sensor:
+    # Atributos estaticos
     __MAX_DISTANCE = 3.0
     __isReading = False
+
+    # Definicion de constructor
     def __init__(self, echo, trigger):
         # Incializar pines
         self.__sensor = DistanceSensor(echo=echo, 
