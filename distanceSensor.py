@@ -5,9 +5,16 @@ class DistanceSensor:
     __MAX_DISTANCE = 3.0
     def __init__(self, echo, trigger):
         # Incializar pines
-        self.__sensor = DistanceSensor(ehco=echo, 
-            trigget=trigger, 
-            max_distance=self.__MAX_DISTANCE)
+        # self.__sensor = DistanceSensor(ehco=echo, 
+        #     trigger=trigger, 
+        #     max_distance=self.__MAX_DISTANCE)
+        
+        self.__sensor = DistanceSensor(
+            echo=20, 
+            trigger=21, 
+            max_distance=3.0)
+
+
     
     def start(self):
         try:
