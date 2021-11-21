@@ -1,17 +1,24 @@
-from signal import signal, SIGTERM, SIGHUP, pause
 from time import sleep
-from gpiozero import DistanceSensor, Buzzer
+from gpiozero import DistanceSensor 
 
 class DistanceSensor:
-    def __init__(self):
+    __MAX_DISTANCE = 3.0
+    def __init__(self, echo, trigger):
+        # Incializar pines
+        self.__sensor = DistanceSensor(echo, trigger, self.__MAX_DISTANCE)
+    
+    def start(self):
         try:
-            signal(SIGTERM, safe_exit)
-            signal(SIGHUP, safe_exit)
-
-            sensor.when_in_range = buzzer.on
-            sensor.when_out_of_range = buzzer.off
-
-            pause()
-
+            while True:
+                distance = self.getDistance()
+                print("Distancia: ",'{:1.2f}'.format(distance) + " cm")
+                sleep(0.5)
         except KeyboardInterrupt:
             pass
+        finally:
+            self.__sensor.close()
+
+    # Metodo para obtener la distancia sensada
+    @property
+    def getDistance(self):
+        return self.__sensor.distance * 100
