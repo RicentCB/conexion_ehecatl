@@ -1,3 +1,4 @@
+import threading
 import time
 # Librerias
 import flightController
@@ -13,13 +14,17 @@ class Drone:
     __state = ''
 
     def __init__(self):
-        # Inciializar instancia de firebase
+        # Incializar instancia de firebase
         cred = credentials.Certificate("private_key.json")
         firebase_admin.initialize_app(cred, {'databaseURL': self.__serverDb})
-        self.__controller = flightController.FlightController()
         self.__db = db.reference("/%s%d"%(self.__nameCollection, self.__idDrone))
+        # Conexion con el controlador
+        self.__controller = flightController.FlightController()
+        # Enviar comando "Listo" al canal
         self.setReady()
-        self.__db.listen(self.onInstruction)
+        # Escuchar cambios en el canal
+        threading.Thread(self.__db.listen(self.onInstruction))
+        # Mensaje de bienvenida
         print("Script Iniciado")
 
     # Metodo para calcular el rango maximo que puede volar el drone
