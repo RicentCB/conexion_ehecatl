@@ -11,7 +11,7 @@ Se necesitan tener git para clonar el repostiorio, y el manejador de paquetes "p
     sudo apt update
     sudo apt install git
     sudo apt-get update
-    sudo apt-get install python-pip
+    sudo apt-get install python3-pip
 ```
 **Tambien es necesario correr el script con una version de python >= 3**, pro deafult las operaciones matematicas no generan "luagares decimales", por eso es necesarioa agregar el argumento **`-Qnew`**
 ```bash
