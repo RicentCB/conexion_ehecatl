@@ -3,7 +3,8 @@ from distanceSensor import DistanceSensor
 
 def main():
     # Drone1 = Drone()
-    DistanceSensor1 = DistanceSensor()
+    Sensor1 = DistanceSensor(20, 21)
+    Sensor1.start()
 
 
 if __name__ == '__main__':
