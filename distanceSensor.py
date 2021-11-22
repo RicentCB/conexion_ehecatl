@@ -7,9 +7,12 @@ class Sensor:
     # Atributos estaticos
     __MAX_DISTANCE = 3.0
     __isReading = False
+    __id = ''
 
     # Definicion de constructor
-    def __init__(self, echo, trigger):
+    def __init__(self, echo, trigger, id):
+        # Guardar id
+        self.__id = id
         # Incializar pines
         self.__sensor = DistanceSensor(echo=echo, 
             trigger=trigger, 
@@ -18,7 +21,7 @@ class Sensor:
     def __readDistance(self):
         while self.__isReading:
             distance = self.getDistance
-            print('{:1.2f}'.format(distance) + " cm")
+            print(self.__id+'{:1.2f}'.format(distance) + " cm")
             sleep(0.5)
     
     def start(self):

@@ -6,7 +6,7 @@ Se necesita configurar el proyecto en firebase y tener los siguientes paquetes i
 ```
 
 ## Para uso en Raspberry
-Se necesitan tener git para clonar el repostiorio, y el manejador de paquetes "pip".
+Se necesitan tener **git** para clonar el repostiorio, y el manejador de paquetes **pip**.
 ```bash
     sudo apt update
     sudo apt install git
