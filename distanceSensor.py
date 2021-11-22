@@ -17,9 +17,9 @@ class Sensor:
 
     def __readDistance(self):
         while self.__isReading:
-                distance = self.getDistance
-                print('{:1.2f}'.format(distance) + " cm")
-                sleep(0.5)
+            distance = self.getDistance
+            print('{:1.2f}'.format(distance) + " cm")
+            sleep(0.5)
     
     def start(self):
         try:
