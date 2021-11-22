@@ -3,7 +3,7 @@ from signal import signal, SIGTERM, SIGHUP, pause
 from threading import Thread
 from time import sleep
 
-class Sensor:
+class Sensor(Thread):
     # Atributos estaticos
     __MAX_DISTANCE = 3.0
     __isReading = False
@@ -17,27 +17,32 @@ class Sensor:
         self.__sensor = DistanceSensor(echo=echo, 
             trigger=trigger, 
             max_distance=self.__MAX_DISTANCE)
+        # Incializar Hilo
+        Thread.__init__(self)
+        self.daemon = True
+        self.start()
 
-    def __readDistance(self):
+    def run(self):
         while self.__isReading:
             distance = self.getDistance
             print(self.__id+'{:1.2f}'.format(distance) + " cm")
-            sleep(0.5)
+            sleep(0.25)
+            
     
-    def start(self):
-        try:
-            signal(SIGTERM, self.__safe_exit)
-            signal(SIGHUP, self.__safe_exit)
+    # def start(self):
+    #     try:
+    #         signal(SIGTERM, self.__safe_exit)
+    #         signal(SIGHUP, self.__safe_exit)
 
-            self.__isReading = True
-            reader = Thread(target=self.__readDistance, daemon=True)
-            reader.start()
+    #         self.__isReading = True
+    #         reader = Thread(target=self.__readDistance, daemon=True)
+    #         reader.start()
 
-            pause() 
-        except KeyboardInterrupt:
-            pass
-        finally:
-            self.__sensor.close()
+    #         pause() 
+    #     except KeyboardInterrupt:
+    #         pass
+    #     finally:
+    #         self.__sensor.close()
 
     # Metodo para obtener la distancia sensada
     @property
