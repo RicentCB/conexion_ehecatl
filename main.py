@@ -25,8 +25,6 @@ def main():
     # Drone1 = Drone()
     Sensor(20, 21, 'S1')
     Sensor(19, 26, 'S2')
-    # Sensor1.start()
-    # Sensor2.start()
     # myClassA()
     # myClassB()
     while True:
