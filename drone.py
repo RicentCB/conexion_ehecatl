@@ -68,8 +68,11 @@ class Drone:
 
     # Metodo para iniciar un viaje
     def setStartTrip(self, coords):
+        
+        self.__controller.takeoff()
         # Cambiar estado del drone
         self.__state = 'inProgress'
+
         # Enivar instruccion de vuelo
         self.__sendInformation('dro_initTrip')
         # Obtener inicio y final de viaje
@@ -78,33 +81,22 @@ class Drone:
         numberOfCords = len(coords)
         # Programa prinicipal para control de vuelo
         while(coords[indexCoords] != finalDestination):
-            if(self.__verifyHeight()):
-                self.__moveTo(coords[indexCoords+1])
+                self.__controller.moveTo(coords[indexCoords+1][0], coords[indexCoords+1][1])
                 # Se ha alcanazdo el punto geografico destino
                 self.__sendInformation('dro_position', {"progressTrip": indexCoords/numberOfCords});
                 indexCoords += 1
             # Terminar verificar altura
+        #Inicia secuencia de aterrizaje
+        print("Iniciando secuencia de ATERRIZAJE...")
+        self.__controller.changeMode("LAND")
         # Se ha alcanzado el destino final
         self.__sendInformation('dro_position', {"progressTrip": 1.0});
         # ----------------------------------------
         # Cambiar estado del drone
         self.__state = 'waiting'
         self.__sendInformation('dro_reachDest')
-
-    # TODO: Metodo para verificar altura actual
-    def __verifyHeight(self):
-        # while(True):
-        time.sleep(0.5)
-            # break
-        return True
     
-    # TODO: Metodo prinicipal
-    # Moviliza al drone dado un grupo de coordendas geograficas
-    # Regresa la nueva posicion en la que se encuentra
-    def __moveTo(self, latLon):
-        self.__controller.setPosition(latLon[0], latLon[1])
-        print(latLon)
-        time.sleep(2)
+    
 
     # -------------------------------------------------------------
     # Metodo donde se "escuchan" todos los items
