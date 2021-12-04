@@ -1,4 +1,3 @@
-import threading
 import time
 # Librerias
 import flightController
@@ -23,7 +22,7 @@ class Drone:
         # Enviar comando "Listo" al canal
         self.setReady()
         # Escuchar cambios en el canal
-        threading.Thread(self.__db.listen(self.onInstruction))
+        self.__db.listen(self.onInstruction)
         # Mensaje de bienvenida
         print("Script Iniciado")
 
