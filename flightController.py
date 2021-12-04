@@ -12,9 +12,9 @@ class FlightController:
     __battery = 0        # Float: 0 - 1
     __currentLat = 0    # Float: Coorenda de latitud obtenida con el GPS Rango -100.0 - 100.0 
     __currentLon = 0    # Float: Coorenda de longitud obtenida con el GPS Rango -100.0 - 100.0
-    __vehicle = None    # Vehicle: Guarda el objeto vehículo donde se conecta
+    __vehicle = object()    # Vehicle: Guarda el objeto vehículo donde se conecta
     __targetHeight = 4
-    __homeLocation = None
+    
 
     def __init__(self):
         # Realizar conexion con controlador
@@ -64,10 +64,10 @@ class FlightController:
 
         self.__vehicle.armed = True
 
-        cmds = self.__vehicle.commands
-        cmds.download()
-        cmds.wait_ready()
-        self.__homeLocation = self.__vehicle.home_location
+        #cmds = self.__vehicle.commands
+        #cmds.download()
+        #cmds.wait_ready()
+        #self.__homeLocation = self.__vehicle.home_location
 
         while not self.__vehicle.armed:
             print("Esperando a que el vehiculo se arme...")
