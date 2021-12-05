@@ -57,7 +57,7 @@ class FlightController:
     # Método para hacer que el drone despegue
     def takeoff(self):
         
-        self.changeMode()
+        self.changeMode("GUIDED")
 
         while not self.__vehicle.is_armable:
             print("Esperando a que el vehiculo sea armable...")
