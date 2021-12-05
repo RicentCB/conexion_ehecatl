@@ -14,15 +14,12 @@ class FlightController:
     __currentLat = 0    # Float: Coorenda de latitud obtenida con el GPS Rango -100.0 - 100.0 
     __currentLon = 0    # Float: Coorenda de longitud obtenida con el GPS Rango -100.0 - 100.0
     __vehicle = object()    # Vehicle: Guarda el objeto vehículo donde se conecta
-    __targetHeight = 4
+    __targetHeight = 0
     
-
-    def __init__(self):
+    def __init__(self, height):
+        # Setear altura de despegue
+        self.__targetHeight = height
         # Realizar conexion con controlador
-        #parser = argparse.ArgumentParser(description="commands")
-        #parser.add_argument("--connect")
-        #args = parser.parse_args()
-
         connection_string = "/dev/ttyAMA0" 
         baud_rate = 921600
         print("CONECTANDO...")

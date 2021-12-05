@@ -12,9 +12,9 @@ class Drone:
     __db = None
     __state = ''
 
-    def __init__(self):
+    def __init__(self, height=4):
         # Conexion con el controlador
-        self.__controller = flightController.FlightController()
+        self.__controller = flightController.FlightController(height)
         try: 
             # Incializar instancia de firebase
             cred = credentials.Certificate("private_key.json")
