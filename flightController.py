@@ -25,13 +25,14 @@ class FlightController:
 
         connection_string = "/dev/ttyAMA0" 
         baud_rate = 921600
-
+        print("CONECTANDO...")
         self.__vehicle = connect(connection_string, baud = baud_rate, wait_ready = True)
+        print("CONEXIÓN EXITOSA!")
 
     # Getter: Bateria acutal del drone
     def __getBattery(self):
         volts = self.__vehicle.battery.voltage
-        self.__battery = (2/3)(volts) - (7.4)
+        self.__battery = (2/3)*(volts) - (7.4)
         return self.__battery
 
     # Getter posicion GPS actual
