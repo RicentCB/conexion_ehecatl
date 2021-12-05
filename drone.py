@@ -13,16 +13,19 @@ class Drone:
     __state = ''
 
     def __init__(self):
-        # Incializar instancia de firebase
-        cred = credentials.Certificate("private_key.json")
-        firebase_admin.initialize_app(cred, {'databaseURL': self.__serverDb})
-        self.__db = db.reference("/%s%d"%(self.__nameCollection, self.__idDrone))
         # Conexion con el controlador
         self.__controller = flightController.FlightController()
-        # Enviar comando "Listo" al canal
-        self.setReady()
-        # Escuchar cambios en el canal
-        self.__db.listen(self.onInstruction)
+        try: 
+            # Incializar instancia de firebase
+            cred = credentials.Certificate("private_key.json")
+            firebase_admin.initialize_app(cred, {'databaseURL': self.__serverDb})
+            self.__db = db.reference("/%s%d"%(self.__nameCollection, self.__idDrone))
+            # Enviar comando "Listo" al canal
+            self.setReady()
+            # Escuchar cambios en el canal
+            self.__db.listen(self.onInstruction)
+        except:
+            print("Error al comunicarse con canal")
         # Mensaje de bienvenida
         print("Script Iniciado")
 
@@ -35,7 +38,10 @@ class Drone:
 
     # Metodo para limpiar interfaz de conexion
     def __cleanChannel(self):
-        self.__db.parent.delete();
+        try:
+            self.__db.parent.delete();
+        except:
+            print("Error al limpiar el canal de comunicacion")
 
     # Metodo para enviar informacion general actual del drone
     # Recopila la informacion del controlador, 
@@ -55,7 +61,10 @@ class Drone:
         }
         data.update(extraInfo)
         self.__cleanChannel()
-        self.__db.push(data)
+        try:
+            self.__db.push(data)
+        except:
+            print("No se ha podido conectar al canal")
 
     # Metodo para preparar al drone para empezar a volar
     def setReady(self):
