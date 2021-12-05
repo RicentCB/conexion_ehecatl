@@ -9,8 +9,11 @@ class FlightController:
     def __init__(self):
         # TODO: Realizar conexion con controlador
         self.__battery = 0.95
-        self.__currentLat = 19.5040103
-        self.__currentLon = -99.1470982
+        # self.__currentLat = 19.5040103
+        # self.__currentLon = -99.1470982
+
+        self.__currentLat = 18.8107907
+        self.__currentLon = -97.5139053
 
     # Getter: Bateria acutal del drone
     @property
